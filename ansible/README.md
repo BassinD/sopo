@@ -57,7 +57,7 @@ bassind.ubuntu.vbox | SUCCESS => {
 ```
 ~/task/sopo/ansible$ cat ./playbooks/roles/ansible-role/defaults/main.yml
 ---
-ansible_version: 2.9.12
+ansible_version: 2.10.2
 ```
 6. Выполним инструкции плейбука с созданной на шае 1 конфигурацией узлов командой: `ansible-playbook -i ./environments/vbox/inventory ./playbooks/ansible.yml --ask-become-pass`
 Результат выполнения команды представлен ниже:
