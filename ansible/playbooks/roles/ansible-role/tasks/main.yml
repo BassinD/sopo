@@ -1,0 +1,18 @@
+---
+- name: Install python-apt - need move to deps or pre_tasks
+  apt:
+    name:
+      - python-apt
+    state: present
+- name: Install python-pip
+  apt:
+    name: python-pip
+    update_cache: yes
+    state: present
+- name: Install ansible
+  pip:
+    name: ansible
+    version: "{{ ansible_version }}"
+    virtualenv_command: virtualenv-2.7
+    state: present
+
