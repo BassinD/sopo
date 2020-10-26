@@ -30,8 +30,15 @@ bassind.ubuntu.vbox | SUCCESS => {
   roles:
     - ansible-role
 ```
-4. Создадим директорию роли *ansible*: ./playbooks/roles/ansible-role. И в ней создадим директорию с задачами *tasks* и задачу *main.yml*. 
-В инструкции задачи добавим следующее для установки python-pip и ansible необходимой версии:
+**Шаги 4 и 5 были изменены, т.к. роль вынесена в отдельный репозиторий https://github.com/BassinD/ansible-role.
+Для установки роли перед шагом 6 выполняется следующая команда:**
+```
+$ ansible-galaxy install -r roles/requirements.yml
+- extracting ansible-role to /home/bassindd/.ansible/roles/ansible-role
+- ansible-role (main) was installed successfully
+```
+~~4. Создадим директорию роли *ansible*: ./playbooks/roles/ansible-role. И в ней создадим директорию с задачами *tasks* и задачу *main.yml*. 
+В инструкции задачи добавим следующее для установки python-pip и ansible необходимой версии:~~
 ```
 ~/task/sopo/ansible$ cat ./playbooks/roles/ansible-role/tasks/main.yml
 ---
@@ -53,7 +60,7 @@ bassind.ubuntu.vbox | SUCCESS => {
 
 
 ```
-5. Дополнительно создадим файл с переменными ./playbooks/roles/ansible-role/defaults/main.yml, где укажем требуемую версию ansible:
+~~5. Дополнительно создадим файл с переменными ./playbooks/roles/ansible-role/defaults/main.yml, где укажем требуемую версию ansible:~~
 ```
 ~/task/sopo/ansible$ cat ./playbooks/roles/ansible-role/defaults/main.yml
 ---
