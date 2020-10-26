@@ -1,3 +1,9 @@
+# Содержание
+- [Отчет по настройке среды через Ansible](#-------------------------------ansible)
+  * [Описание рабочей среды](#----------------------)
+  * [Ход работы](#----------)
+- [Описание Dockerfile со средой Ansible](#---------dockerfile-----------ansible)
+
 # Отчет по настройке среды через Ansible
 **Цель:** используя Ansible на одной виртуальной машине (хосте) развернуть Ansible на другой виртуальной машине.
 ## Описание рабочей среды
@@ -105,4 +111,38 @@ ansible 2.10.2
   ansible python module location = /usr/local/lib/python2.7/dist-packages/ansible
   executable location = /usr/local/bin/ansible
   python version = 2.7.12 (default, Jul 21 2020, 15:19:50) [GCC 5.4.0 20160609]
+```
+
+# Описание Dockerfile со средой Ansible
+Dockerfile собран на базе образа `ubuntu:16.04`.
+Для сборки используются параметры `ssh_prv_key` и `ssh_pub_key`, которые отвечают за приватный и публичный SSH-ключи соответсвенно. Они используются для подключения контейнера по SSH без запроса пароля.
+Пример команды для сборки контейнера:
+```
+docker build -t docker-ansible --build-arg ssh_prv_key="$(cat ~/.ssh/id_rsa)" --build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)" .
+```
+Пример запуска контенера для выполнения роли из репозитория:
+```
+~/task/sopo/ansible$ sudo docker run -it -v /home/bassindd/.ansible/roles/:/root/.ansible/roles -v /home/bassindd/task/sopo/ansible/:/ansible docker-ansible ansible-playbook -i /ansible/environments/vbox/inventory /ansible/playbooks/ansible.yml --extra-vars "ansible_sudo_pass=******"
+
+PLAY [all] ******************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************************************************************************************************************
+[DEPRECATION WARNING]: Distribution Ubuntu 16.04 on host bassind.ubuntu.vbox should use /usr/bin/python3, but is using /usr/bin/python for backward compatibility with prior Ansible releases. A
+future Ansible release will default to using the discovered platform python for this host. See https://docs.ansible.com/ansible/2.9/reference_appendices/interpreter_discovery.html for more
+information. This feature will be removed in version 2.12. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+ok: [bassind.ubuntu.vbox]
+
+TASK [ansible-role : Install python-apt - need move to deps or pre_tasks] ***************************************************************************************************************************
+ok: [bassind.ubuntu.vbox]
+
+TASK [ansible-role : Install python-pip] ************************************************************************************************************************************************************
+ok: [bassind.ubuntu.vbox]
+
+TASK [ansible-role : Install ansible] ***************************************************************************************************************************************************************
+[WARNING]: The value {'major': 2, 'full': '2.9.12', 'string': '2.9.12', 'minor': 9, 'revision': 12} (type dict) in a string field was converted to u"{'major': 2, 'full': '2.9.12', 'string':
+'2.9.12', 'minor': 9, 'revision': 12}" (type string). If this does not look like what you expect, quote the entire value to ensure it does not change.
+ok: [bassind.ubuntu.vbox]
+
+PLAY RECAP ******************************************************************************************************************************************************************************************
+bassind.ubuntu.vbox        : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
