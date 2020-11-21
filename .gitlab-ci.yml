@@ -1,0 +1,17 @@
+stage:
+    - install_regs_with_galaxy
+    - apply_role
+
+install_galaxy:
+    stage: install_regs_with_galaxy
+    tags:
+        - ansible_ini
+    script:
+        - ansible-galaxy install -r ansible/roles/requirements.yml --force
+
+deploy_role:
+    stage: apply_role
+    tags:
+        - ansible_ini
+    script:
+        - ansible-playbook -i ansible/enviroments/vbox/inventory ansible/playbook/ansible.yml --extra-vars "ansible_sudo_pass=Serverg0d!" -D
