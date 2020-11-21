@@ -1,4 +1,4 @@
-stage:
+stages:
     - install_regs_with_galaxy
     - apply_role
 
@@ -14,4 +14,4 @@ deploy_role:
     tags:
         - ansible_ini
     script:
-        - ansible-playbook -i ansible/enviroments/vbox/inventory ansible/playbook/ansible.yml --extra-vars "ansible_sudo_pass=Serverg0d!" -D
+        - ansible-playbook -i ansible/environments/vbox/inventory ansible/playbooks/ansible.yml --extra-vars "ansible_sudo_pass=Serverg0d!" -D
